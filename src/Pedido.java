@@ -1,14 +1,15 @@
 import java.util.Date;
+import java.util.List;
 
 public class Pedido {
-    private ItemPedido _itemPedido;
+    private List<ItemPedido> _itemPedido;
     private int _idetificador;
     private Date _data;
     private double _valorTotalPedido;
     private String _cnpjCpfCliente;
     private boolean _pago;
 
-    public Pedido (ItemPedido itemPedido, int identificador, Date data, double valorTotalPedido, String cnpjCpfCliente, boolean pago)
+    public Pedido (List<ItemPedido> itemPedido, int identificador, Date data, double valorTotalPedido, String cnpjCpfCliente, boolean pago)
     {
         _itemPedido = itemPedido;
         _idetificador = identificador;
@@ -18,11 +19,11 @@ public class Pedido {
         _pago = pago;
     }
 
-    public ItemPedido get_itemPedido() {
+    public List<ItemPedido> get_itemPedido() {
         return _itemPedido;
     }
 
-    public void set_itemPedido(ItemPedido _itemPedido) {
+    public void set_itemPedido(List<ItemPedido> _itemPedido) {
         this._itemPedido = _itemPedido;
     }
 
@@ -76,7 +77,7 @@ public class Pedido {
             pagou = "Não";
 
         System.out.println("-- Pedido: " + get_idetificador() + "--");
-        System.out.println("Produto: " + get_itemPedido().get_nomeProduto());
+        //ver a necessidade de printar os itens do pedido
         System.out.println("Data: " + get_data());
         System.out.println("Valor Total Pedido: " + get_valorTotalPedido());
         System.out.println("CNPJ/CPF cliente: " + get_cnpjCpfCliente());

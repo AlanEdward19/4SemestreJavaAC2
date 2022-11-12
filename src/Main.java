@@ -3,11 +3,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws Exception{
         int opcao;
         var reader = new Scanner(System.in);
         var clientesCadastrados = new ArrayList<Cliente>();
@@ -18,8 +18,7 @@ public class Main {
         Menu();
         opcao = reader.nextInt();
 
-        switch (opcao)
-        {
+        switch (opcao) {
             case 1:
                 clientesCadastrados.add(CriarCliente());
                 break;
@@ -33,6 +32,7 @@ public class Main {
                 break;
 
             case 4:
+                
                 pedidosCadastrados.add(CriarPedido(produtosCadastrados, clientesCadastrados));
                 break;
 
@@ -50,27 +50,26 @@ public class Main {
         }
     }
 
-    public static void Menu()
-    {
+    public static void Menu() {
         System.out.println("Menu Principal");
-        System.out.println("[1] Cadastrar Cliente"); //feito
+        System.out.println("[1] Cadastrar Cliente"); // feito
         System.out.println("[2] Cadastrar Fornecedor");
-        System.out.println("[3] Cadastrar Produto"); //feito
-        System.out.println("[4] Efetuar Pedido"); //falta terminar
+        System.out.println("[3] Cadastrar Produto"); // feito
+        System.out.println("[4] Efetuar Pedido"); // falta terminar
         System.out.println("[5] Baixa de pagamento de um pedido");
-        System.out.println("[6] Relatorios"); //falta terminar
-        System.out.println("[7] Sair"); //feito
+        System.out.println("[6] Relatorios"); // falta terminar
+        System.out.println("[7] Sair"); // feito
     }
 
-    public static void Relatorios(ArrayList<Cliente> clientesCadastrados, ArrayList<ItemPedido> produtosCadastrados, ArrayList<Pedido> pedidosCadastrados)
-    {
+    public static void Relatorios(ArrayList<Cliente> clientesCadastrados, ArrayList<ItemPedido> produtosCadastrados,
+            ArrayList<Pedido> pedidosCadastrados) {
         int opcao;
         var reader = new Scanner(System.in);
 
-        System.out.println("[1] Listar todos os clientes"); //feito
+        System.out.println("[1] Listar todos os clientes"); // feito
         System.out.println("[2] Listar todos os fornecedores");
-        System.out.println("[3] Listar todos os produtos"); //feito
-        System.out.println("[4] Listar todos os pedidos"); //feito
+        System.out.println("[3] Listar todos os produtos"); // feito
+        System.out.println("[4] Listar todos os pedidos"); // feito
         System.out.println("[5] Listar todos os pedidos em intervalo de datas");
         System.out.println("[6] Buscar pedido por codigo");
         System.out.println("[7] Listar todos os pedidos pagos");
@@ -78,7 +77,7 @@ public class Main {
         System.out.println("[9] Calculo total de pedidos abertos");
         opcao = reader.nextInt();
 
-        switch (opcao){
+        switch (opcao) {
             case 1:
                 Listar(clientesCadastrados);
                 break;
@@ -117,8 +116,8 @@ public class Main {
         }
 
     }
-    public static Cliente CriarCliente()
-    {
+
+    public static Cliente CriarCliente() {
         Cliente cliente;
 
         var reader = new Scanner(System.in);
@@ -140,13 +139,12 @@ public class Main {
         else
             pj = false;
 
-        if (pj){
+        if (pj) {
             System.out.println("Qual o CNPJ do cliente?");
             cpfCnpj = reader.nextLine();
 
             cliente = new PessoaJuridica(nome, email, cpfCnpj);
-        }
-        else{
+        } else {
             System.out.println("Qual o CPF do cliente?");
             cpfCnpj = reader.nextLine();
 
@@ -155,9 +153,9 @@ public class Main {
 
         return cliente;
     }
-    public static ItemPedido CriarProduto()
-    {
-       ItemPedido produto;
+
+    public static ItemPedido CriarProduto() {
+        ItemPedido produto;
 
         var readerString = new Scanner(System.in);
         var readerInt = new Scanner(System.in);
@@ -183,31 +181,23 @@ public class Main {
 
         return produto;
     }
-    public static Pedido CriarPedido(ArrayList<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados) throws ParseException {
-        ItemPedido produtoEscolhido;
+
+    public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados)
+    throws Exception {
+        List<ItemPedido> produtoEscolhido = new ArrayList<ItemPedido>();
         Cliente cliente;
         Pedido pedido;
+        int resposta = 0;
 
         String nomeProduto, cnpjCpfCliente;
         int identificador;
-        double valorTotalPedido;
+        double valorTotalPedido = 0;
         Date data;
         boolean pago, clienteExiste, produtoExiste;
 
         var readerString = new Scanner(System.in);
         var readerInt = new Scanner(System.in);
         var readerDouble = new Scanner(System.in);
-
-        do {
-            System.out.println("Qual produto está neste pedido?");
-            nomeProduto = readerString.nextLine();
-
-            produtoExiste = VerificarSeProdutoExiste(produtosDisponiveis, nomeProduto);
-
-            if (!produtoExiste){
-                System.out.println("Produto Não existe, insira nome do produto");
-            }
-        }while (!produtoExiste);
 
         System.out.println("Qual o ID deste pedido?");
         identificador = readerInt.nextInt();
@@ -221,11 +211,11 @@ public class Main {
 
             clienteExiste = VerificarSeClienteExiste(clientesCadastrados, cnpjCpfCliente);
 
-            if (!clienteExiste){
+            if (!clienteExiste) {
                 System.out.println("Cliente Não existe, insira novamente CNPJ/CPF");
             }
 
-        }while (!clienteExiste);
+        } while (!clienteExiste);
 
         System.out.println("Este pedido ja foi pago?");
         if (readerString.nextLine().contains("S"))
@@ -234,35 +224,51 @@ public class Main {
         else
             pago = false;
 
-        for (var produto : produtosDisponiveis) // Varre produtos cadastrados, e procura compatibilidade
-        {
-            if (produto.get_nomeProduto().equals(nomeProduto))
-            {
-                produtoEscolhido = produto;
-            }
-        }
+        do {
+            do {
+                System.out.println("Qual produto está neste pedido?");
+                nomeProduto = readerString.nextLine();
 
+                produtoExiste = VerificarSeProdutoExiste(produtosDisponiveis, nomeProduto);
+
+                if (!produtoExiste) {
+                    System.out.println("Produto Não existe, insira nome do produto");
+                }
+            } while (!produtoExiste);
+
+            for (var produto : produtosDisponiveis) // Varre produtos cadastrados, e procura compatibilidade
+            {
+                if (produto.get_nomeProduto().equals(nomeProduto)) {
+                    produtoEscolhido.add(produto);
+                }
+            }
+
+            System.out.println("\nDeseja adicionar outro produto?\n[1]SIM\n[2]NÃO\n");
+            resposta = readerInt.nextInt();
+
+        } while (resposta != 0);
+
+        for (var produto : produtoEscolhido) {
+            valorTotalPedido += produto.get_valorTotal();
+        }
 
         pedido = new Pedido(produtoEscolhido, identificador, data, valorTotalPedido, cnpjCpfCliente, pago);
 
         return pedido;
 
     }
-    public static boolean VerificarSeClienteExiste(ArrayList<Cliente> clientesCadastrados, String cnpjCpf)
-    {
+
+    public static boolean VerificarSeClienteExiste(ArrayList<Cliente> clientesCadastrados, String cnpjCpf) {
         boolean clienteExiste = false;
 
-        for (var cliente : clientesCadastrados)
-        {
-            if (cliente instanceof PessoaJuridica)
-            {
-                if(((PessoaJuridica) cliente).get_cnpj().equals(cnpjCpf))
+        for (var cliente : clientesCadastrados) {
+            if (cliente instanceof PessoaJuridica) {
+                if (((PessoaJuridica) cliente).get_cnpj().equals(cnpjCpf))
                     clienteExiste = true;
             }
 
-            else if (cliente instanceof PessoaFisica)
-            {
-                if(((PessoaFisica) cliente).get_cpf().equals(cnpjCpf))
+            else if (cliente instanceof PessoaFisica) {
+                if (((PessoaFisica) cliente).get_cpf().equals(cnpjCpf))
                     clienteExiste = true;
             }
         }
@@ -270,13 +276,11 @@ public class Main {
         return clienteExiste;
     }
 
-    public static boolean VerificarSeProdutoExiste(ArrayList<ItemPedido> produtosCadastrados, String nomeProduto)
-    {
+    public static boolean VerificarSeProdutoExiste(List<ItemPedido> produtosCadastrados, String nomeProduto) {
         boolean produtoExiste = false;
 
-        for (var produto : produtosCadastrados)
-        {
-            if (produto.get_nomeProduto().equals(nomeProduto)){
+        for (var produto : produtosCadastrados) {
+            if (produto.get_nomeProduto().equals(nomeProduto)) {
                 produtoExiste = true;
             }
         }
@@ -284,19 +288,17 @@ public class Main {
         return produtoExiste;
     }
 
-    public static <T> void Listar (ArrayList<T> cadastrados)
-    {
-        for (var item : cadastrados)
-        {
-            if (item instanceof Cliente){
+    public static <T> void Listar(ArrayList<T> cadastrados) {
+        for (var item : cadastrados) {
+            if (item instanceof Cliente) {
                 ((Cliente) item).Print();
             }
 
-            else if (item instanceof ItemPedido){
+            else if (item instanceof ItemPedido) {
                 ((ItemPedido) item).Print();
             }
 
-            else if (item instanceof Pedido){
+            else if (item instanceof Pedido) {
                 ((Pedido) item).Print();
             }
         }
