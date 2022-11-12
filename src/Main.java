@@ -342,4 +342,31 @@ public class Main {
             }
         }
     }
+
+    public static <T> void ListarPedidosPorDatas(ArrayList<T> cadastrados) throws Exception {
+        Date dataInicial;
+        Date dataFinal; 
+        var readerString = new Scanner(System.in);
+        
+        System.out.println("Digite a data inicial (dd-MM-yyyy): ");
+        dataInicial = new SimpleDateFormat("dd-MM-yyyy").parse(readerString.next());
+        
+
+        System.out.println("Digite a data final (dd-MM-yyyy): ");
+        dataFinal = new SimpleDateFormat("dd-MM-yyyy").parse(readerString.next());
+
+        for (var item : cadastrados) {
+
+            if (item instanceof Pedido ) {
+
+                var dataItem = ((Pedido) item).get_data();
+
+                if ((dataInicial.equals(dataItem) || dataInicial.after(dataItem)) 
+                    && (dataFinal.before(dataItem) || dataFinal.equals(dataItem))) {
+                    
+                    ((Pedido) item).Print();
+                }
+            }
+        }
+    }//necessario testar a logica e tentar melhorar o codigo
 }
