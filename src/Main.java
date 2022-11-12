@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         int opcao;
         var reader = new Scanner(System.in);
         var clientesCadastrados = new ArrayList<Cliente>();
-        var fornecedoresCadastrados = new ArrayList<Cliente>(); // Tem que criar a classe
+        var fornecedoresCadastrados = new ArrayList<Fornecedor>();
         var produtosCadastrados = new ArrayList<ItemPedido>();
         var pedidosCadastrados = new ArrayList<Pedido>();
 
@@ -24,7 +24,7 @@ public class Main {
                 break;
 
             case 2:
-                CriarCliente(); //
+                fornecedoresCadastrados.add(CriarFornecedor()); 
                 break;
 
             case 3:
@@ -32,7 +32,7 @@ public class Main {
                 break;
 
             case 4:
-                
+
                 pedidosCadastrados.add(CriarPedido(produtosCadastrados, clientesCadastrados));
                 break;
 
@@ -41,7 +41,7 @@ public class Main {
                 break;
 
             case 6:
-                Relatorios(clientesCadastrados, produtosCadastrados, pedidosCadastrados);
+                Relatorios(clientesCadastrados, produtosCadastrados, pedidosCadastrados, fornecedoresCadastrados);
                 break;
 
             case 7:
@@ -53,7 +53,7 @@ public class Main {
     public static void Menu() {
         System.out.println("Menu Principal");
         System.out.println("[1] Cadastrar Cliente"); // feito
-        System.out.println("[2] Cadastrar Fornecedor");
+        System.out.println("[2] Cadastrar Fornecedor"); //feito
         System.out.println("[3] Cadastrar Produto"); // feito
         System.out.println("[4] Efetuar Pedido"); // falta terminar
         System.out.println("[5] Baixa de pagamento de um pedido");
@@ -62,12 +62,12 @@ public class Main {
     }
 
     public static void Relatorios(ArrayList<Cliente> clientesCadastrados, ArrayList<ItemPedido> produtosCadastrados,
-            ArrayList<Pedido> pedidosCadastrados) {
+            ArrayList<Pedido> pedidosCadastrados, ArrayList<Fornecedor> fornecedoresCadastrados) {
         int opcao;
         var reader = new Scanner(System.in);
 
         System.out.println("[1] Listar todos os clientes"); // feito
-        System.out.println("[2] Listar todos os fornecedores");
+        System.out.println("[2] Listar todos os fornecedores"); //feito
         System.out.println("[3] Listar todos os produtos"); // feito
         System.out.println("[4] Listar todos os pedidos"); // feito
         System.out.println("[5] Listar todos os pedidos em intervalo de datas");
@@ -83,7 +83,7 @@ public class Main {
                 break;
 
             case 2:
-                Listar(clientesCadastrados); // Fazer para fornecedores
+                Listar(fornecedoresCadastrados);
                 break;
 
             case 3:
@@ -182,8 +182,31 @@ public class Main {
         return produto;
     }
 
+    public static Fornecedor CriarFornecedor() {
+
+        Fornecedor fornecedor;
+
+        var reader = new Scanner(System.in);
+
+        String nome, email, cnpj;
+        boolean pj = true;
+
+        System.out.println("Qual o nome do fornecedor?");
+        nome = reader.nextLine();
+
+        System.out.println("Qual o email do fornecedor?");
+        email = reader.nextLine();
+
+        System.out.println("Qual o CNPJ do fornecedor?");
+        cnpj = reader.nextLine();
+
+        fornecedor = new Fornecedor(nome, email, cnpj, pj);
+
+        return fornecedor;
+    }
+
     public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados)
-    throws Exception {
+            throws Exception {
         List<ItemPedido> produtoEscolhido = new ArrayList<ItemPedido>();
         Cliente cliente;
         Pedido pedido;
@@ -288,6 +311,10 @@ public class Main {
         return produtoExiste;
     }
 
+    public static boolean VerificarSeFornecedorExiste() {
+        return true;
+    }
+
     public static <T> void Listar(ArrayList<T> cadastrados) {
         for (var item : cadastrados) {
             if (item instanceof Cliente) {
@@ -300,6 +327,10 @@ public class Main {
 
             else if (item instanceof Pedido) {
                 ((Pedido) item).Print();
+            }
+
+            else if (item instanceof Fornecedor) {
+                ((Fornecedor) item).Print();
             }
         }
     }
