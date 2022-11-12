@@ -311,8 +311,16 @@ public class Main {
         return produtoExiste;
     }
 
-    public static boolean VerificarSeFornecedorExiste() {
-        return true;
+    public static boolean VerificarSeFornecedorExiste(ArrayList<Fornecedor> fornecedoresCadastrados, String cnpj) {
+        boolean fornecedorExiste = false;
+
+        for (var fornecedor : fornecedoresCadastrados) {
+            if (fornecedor.get_cnpjFornecedor().equals(cnpj)) {
+                fornecedorExiste = true;
+            }
+        }
+
+        return fornecedorExiste;
     }
 
     public static <T> void Listar(ArrayList<T> cadastrados) {
