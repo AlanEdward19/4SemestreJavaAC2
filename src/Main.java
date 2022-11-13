@@ -62,7 +62,7 @@ public class Main {
     }
 
     public static void Relatorios(ArrayList<Cliente> clientesCadastrados, ArrayList<ItemPedido> produtosCadastrados,
-            ArrayList<Pedido> pedidosCadastrados, ArrayList<Fornecedor> fornecedoresCadastrados) {
+            ArrayList<Pedido> pedidosCadastrados, ArrayList<Fornecedor> fornecedoresCadastrados) throws Exception {
         int opcao;
         var reader = new Scanner(System.in);
 
@@ -95,7 +95,7 @@ public class Main {
                 break;
 
             case 5:
-                Listar(pedidosCadastrados);
+                ListarPedidosPorDatas(pedidosCadastrados);
                 break;
 
             case 6:
