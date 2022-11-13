@@ -38,7 +38,7 @@ public class Main {
                     break;
     
                 case 5:
-                    CriarCliente();
+                    DarBaixaPagamentoPedido(pedidosCadastrados);
                     break;
     
                 case 6:
@@ -58,8 +58,8 @@ public class Main {
         System.out.println("[1] Cadastrar Cliente"); // feito
         System.out.println("[2] Cadastrar Fornecedor"); //feito
         System.out.println("[3] Cadastrar Produto"); // feito
-        System.out.println("[4] Efetuar Pedido"); // feito
-        System.out.println("[5] Baixa de pagamento de um pedido");
+        System.out.println("[4] Efetuar Pedido"); // Feito
+        System.out.println("[5] Baixa de pagamento de um pedido"); // Feito
         System.out.println("[6] Relatorios"); // falta terminar
         System.out.println("[7] Sair"); // feito
     }
@@ -208,82 +208,6 @@ public class Main {
         return fornecedor;
     }
 
-    public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados) throws Exception {
-        var produtoEscolhido = new ArrayList<ItemPedido>();
-        Cliente cliente;
-        Pedido pedido;
-        int resposta = 0;
-
-        String nomeProduto, cnpjCpfCliente;
-        int identificador;
-        double valorTotalPedido = 0;
-        Date data;
-        boolean pago, clienteExiste, produtoExiste;
-
-        var readerStringDate = new Scanner(System.in);
-        var readerString = new Scanner(System.in);
-        var readerInt = new Scanner(System.in);
-        var readerDouble = new Scanner(System.in);
-
-        System.out.println("Qual o ID deste pedido?");
-        identificador = readerInt.nextInt();
-
-        System.out.println("Qual a data deste pedido? (dd-MM-yyyy)");
-        data = new SimpleDateFormat("dd-MM-yyyy").parse(readerStringDate.next());
-
-        do {
-            System.out.println("Qual o CNPJ ou CPF do cliente?");
-            cnpjCpfCliente = readerString.nextLine();
-
-            clienteExiste = VerificarSeClienteExiste(clientesCadastrados, cnpjCpfCliente);
-
-            if (!clienteExiste) {
-                System.out.println("Cliente Não existe, insira novamente CNPJ/CPF");
-            }
-
-        } while (!clienteExiste);
-
-        System.out.println("Este pedido ja foi pago?");
-        if (readerString.nextLine().toUpperCase().contains("S"))
-            pago = true;
-
-        else
-            pago = false;
-
-        do {
-            do {
-                System.out.println("Qual produto está neste pedido?");
-                nomeProduto = readerString.nextLine();
-
-                produtoExiste = VerificarSeProdutoExiste(produtosDisponiveis, nomeProduto);
-
-                if (!produtoExiste) {
-                    System.out.println("Produto Não existe, insira nome do produto");
-                }
-            } while (!produtoExiste);
-
-            for (var produto : produtosDisponiveis) // Varre produtos cadastrados, e procura compatibilidade
-            {
-                if (produto.get_nomeProduto().equals(nomeProduto)) {
-                    produtoEscolhido.add(produto);
-                }
-            }
-
-            System.out.println("\nDeseja adicionar outro produto no pedido?\n[1]SIM\n[2]NÃO\n");
-            resposta = readerInt.nextInt();
-
-        } while (resposta != 2);
-
-        for (var produto : produtoEscolhido) {
-            valorTotalPedido += produto.get_valorTotal();
-        }
-
-        pedido = new Pedido(produtoEscolhido, identificador, data, valorTotalPedido, cnpjCpfCliente, pago);
-
-        return pedido;
-
-    }
-
     public static boolean VerificarSeClienteExiste(ArrayList<Cliente> clientesCadastrados, String cnpjCpf) {
         boolean clienteExiste = false;
 
@@ -372,4 +296,94 @@ public class Main {
             }
         }
     }//necessario testar a logica e tentar melhorar o codigo
+
+    public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados) throws Exception {
+        var produtoEscolhido = new ArrayList<ItemPedido>();
+        Cliente cliente;
+        Pedido pedido;
+        int resposta = 0;
+
+        String nomeProduto, cnpjCpfCliente;
+        int identificador;
+        double valorTotalPedido = 0;
+        Date data;
+        boolean pago = false, clienteExiste, produtoExiste;
+
+        var readerStringDate = new Scanner(System.in);
+        var readerString = new Scanner(System.in);
+        var readerInt = new Scanner(System.in);
+        var readerDouble = new Scanner(System.in);
+
+        System.out.println("Qual o ID deste pedido?");
+        identificador = readerInt.nextInt();
+
+        System.out.println("Qual a data deste pedido? (dd-MM-yyyy)");
+        data = new SimpleDateFormat("dd-MM-yyyy").parse(readerStringDate.next());
+
+        do {
+            System.out.println("Qual o CNPJ ou CPF do cliente?");
+            cnpjCpfCliente = readerString.nextLine();
+
+            clienteExiste = VerificarSeClienteExiste(clientesCadastrados, cnpjCpfCliente);
+
+            if (!clienteExiste) {
+                System.out.println("Cliente Não existe, insira novamente CNPJ/CPF");
+            }
+
+        } while (!clienteExiste);
+
+        /*System.out.println("Este pedido ja foi pago?");
+        if (readerString.nextLine().toUpperCase().contains("S"))
+            pago = true;
+
+        else
+            pago = false;
+        */
+        do {
+            do {
+                System.out.println("Qual produto está neste pedido?");
+                nomeProduto = readerString.nextLine();
+
+                produtoExiste = VerificarSeProdutoExiste(produtosDisponiveis, nomeProduto);
+
+                if (!produtoExiste) {
+                    System.out.println("Produto Não existe, insira nome do produto");
+                }
+            } while (!produtoExiste);
+
+            for (var produto : produtosDisponiveis) // Varre produtos cadastrados, e procura compatibilidade
+            {
+                if (produto.get_nomeProduto().toLowerCase().equals(nomeProduto.toLowerCase())) {
+                    produtoEscolhido.add(produto);
+                }
+            }
+
+            System.out.println("\nDeseja adicionar outro produto no pedido?\n[1]SIM\n[2]NÃO\n");
+            resposta = readerInt.nextInt();
+
+        } while (resposta != 2);
+
+        for (var produto : produtoEscolhido) {
+            valorTotalPedido += produto.get_valorTotal();
+        }
+
+        pedido = new Pedido(produtoEscolhido, identificador, data, valorTotalPedido, cnpjCpfCliente, pago);
+
+        return pedido;
+
+    }
+
+    public static void DarBaixaPagamentoPedido(ArrayList<Pedido> pedido) {
+        var reader = new Scanner(System.in);
+        int idPedido;
+
+        System.out.println("Digite o identificador do pedido que pretende-se dar baixa: ");
+        idPedido = reader.nextInt();
+
+        for (int i = 0; i < pedido.size(); i++) {
+            if (pedido.get(i).get_idetificador() == idPedido) {
+                pedido.get(i).set_pago(true);
+            }
+        }
+    }
 }
