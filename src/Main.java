@@ -95,7 +95,7 @@ public class Main {
                 break;
 
             case 5:
-                CriarCliente();
+                Listar(pedidosCadastrados);
                 break;
 
             case 6:
@@ -205,8 +205,7 @@ public class Main {
         return fornecedor;
     }
 
-    public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados)
-            throws Exception {
+    public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados) throws Exception {
         List<ItemPedido> produtoEscolhido = new ArrayList<ItemPedido>();
         Cliente cliente;
         Pedido pedido;
