@@ -60,7 +60,7 @@ public class Main {
         System.out.println("[3] Cadastrar Produto"); // feito
         System.out.println("[4] Efetuar Pedido"); // Feito
         System.out.println("[5] Baixa de pagamento de um pedido"); // Feito
-        System.out.println("[6] Relatorios"); // falta terminar
+        System.out.println("[6] Relatorios"); // falta terminar (terminado) ??
         System.out.println("[7] Sair"); // feito
     }
 
@@ -73,11 +73,13 @@ public class Main {
         System.out.println("[2] Listar todos os fornecedores"); //feito
         System.out.println("[3] Listar todos os produtos"); // feito
         System.out.println("[4] Listar todos os pedidos"); // feito
-        System.out.println("[5] Listar todos os pedidos em intervalo de datas");
-        System.out.println("[6] Buscar pedido por codigo");
-        System.out.println("[7] Listar todos os pedidos pagos");
-        System.out.println("[8] Buscar produto por nome");
-        System.out.println("[9] Calculo total de pedidos abertos");
+        System.out.println("[5] Listar todos os pedidos em intervalo de datas"); // feito??
+        System.out.println("[6] Buscar pedido por codigo"); // feito
+        System.out.println("[7] Listar todos os pedidos pagos"); // Feito
+        System.out.println("[8] Buscar produto por nome"); // Feito
+        System.out.println("[9] Calculo total de pedidos abertos"); // Feito
+        System.out.println("[10] Voltar");
+
         opcao = reader.nextInt();
 
         switch (opcao) {
@@ -102,19 +104,22 @@ public class Main {
                 break;
 
             case 6:
-                CriarCliente();
+                BuscaPedidosId(pedidosCadastrados);
                 break;
 
             case 7:
-                System.exit(0);
+                BuscaPedidosPagos(pedidosCadastrados);
                 break;
 
             case 8:
-                System.exit(0);
+                BuscaProdutoNome(produtosCadastrados);
                 break;
 
             case 9:
-                System.exit(0);
+                CalculaPedidosAbertos(pedidosCadastrados);
+                break;
+
+            case 10:
                 break;
         }
 
@@ -382,5 +387,55 @@ public class Main {
                 pedido.get(i).set_pago(true);
             }
         }
+    }
+
+    public static void BuscaPedidosId(ArrayList<Pedido> pedido) {
+        var reader = new Scanner(System.in);
+        int idPedido;
+
+        System.out.println("Digite o identificador do pedido que pretende-se buscar: ");
+        idPedido = reader.nextInt();
+
+        for (int i = 0; i < pedido.size(); i++) {
+            if (pedido.get(i).get_idetificador() == idPedido) {
+                pedido.get(i).Print();
+            }
+        }
+    }
+
+    public static void BuscaPedidosPagos(ArrayList<Pedido> pedido) {
+        var reader = new Scanner(System.in);
+     
+        for (int i = 0; i < pedido.size(); i++) {
+            if (pedido.get(i).is_pago()) {
+                pedido.get(i).Print();
+            }
+        }
+    }
+
+    public static void BuscaProdutoNome(ArrayList<ItemPedido> produto) {
+        var reader = new Scanner(System.in);
+        var nome = "";
+
+        System.out.println("Digite o nome do produto que pretende-se buscar: ");
+        nome = reader.nextLine();        
+     
+        for (int i = 0; i < produto.size(); i++) {
+            if (produto.get(i).equals(nome)) {
+                produto.get(i).Print();
+            }
+        }
+    }
+
+    public static void CalculaPedidosAbertos(ArrayList<Pedido> pedido) {
+        int count = 0;
+
+        for (int i = 0; i < pedido.size(); i++) {
+            if (!(pedido.get(i).is_pago())) {
+                count++;
+            }
+        }
+
+        System.out.println("Pedidos totais em aberto (não pagos): " + count);
     }
 }
