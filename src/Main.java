@@ -15,39 +15,42 @@ public class Main {
         var produtosCadastrados = new ArrayList<ItemPedido>();
         var pedidosCadastrados = new ArrayList<Pedido>();
 
-        Menu();
-        opcao = reader.nextInt();
+        do {
+            Menu();
+            opcao = reader.nextInt();
 
-        switch (opcao) {
-            case 1:
-                clientesCadastrados.add(CriarCliente());
-                break;
-
-            case 2:
-                fornecedoresCadastrados.add(CriarFornecedor()); 
-                break;
-
-            case 3:
-                produtosCadastrados.add(CriarProduto());
-                break;
-
-            case 4:
-
-                pedidosCadastrados.add(CriarPedido(produtosCadastrados, clientesCadastrados));
-                break;
-
-            case 5:
-                CriarCliente();
-                break;
-
-            case 6:
-                Relatorios(clientesCadastrados, produtosCadastrados, pedidosCadastrados, fornecedoresCadastrados);
-                break;
-
-            case 7:
-                System.exit(0);
-                break;
-        }
+            switch (opcao) {
+                case 1:
+                    clientesCadastrados.add(CriarCliente());
+                    break;
+    
+                case 2:
+                    fornecedoresCadastrados.add(CriarFornecedor()); 
+                    break;
+    
+                case 3:
+                    produtosCadastrados.add(CriarProduto());
+                    break;
+    
+                case 4:
+    
+                    pedidosCadastrados.add(CriarPedido(produtosCadastrados, clientesCadastrados));
+                    break;
+    
+                case 5:
+                    CriarCliente();
+                    break;
+    
+                case 6:
+                    Relatorios(clientesCadastrados, produtosCadastrados, pedidosCadastrados, fornecedoresCadastrados);
+                    break;
+    
+                case 7:
+                    System.exit(0);
+                    break;
+            }
+        } while (opcao != 7);
+        
     }
 
     public static void Menu() {
@@ -55,7 +58,7 @@ public class Main {
         System.out.println("[1] Cadastrar Cliente"); // feito
         System.out.println("[2] Cadastrar Fornecedor"); //feito
         System.out.println("[3] Cadastrar Produto"); // feito
-        System.out.println("[4] Efetuar Pedido"); // falta terminar
+        System.out.println("[4] Efetuar Pedido"); // feito
         System.out.println("[5] Baixa de pagamento de um pedido");
         System.out.println("[6] Relatorios"); // falta terminar
         System.out.println("[7] Sair"); // feito
@@ -133,7 +136,7 @@ public class Main {
 
         System.out.println("Cliente é pessoa Juridica?");
 
-        if (reader.nextLine().contains("S"))
+        if (reader.nextLine().toUpperCase().contains("S"))
             pj = true;
 
         else
@@ -206,7 +209,7 @@ public class Main {
     }
 
     public static Pedido CriarPedido(List<ItemPedido> produtosDisponiveis, ArrayList<Cliente> clientesCadastrados) throws Exception {
-        List<ItemPedido> produtoEscolhido = new ArrayList<ItemPedido>();
+        var produtoEscolhido = new ArrayList<ItemPedido>();
         Cliente cliente;
         Pedido pedido;
         int resposta = 0;
@@ -217,6 +220,7 @@ public class Main {
         Date data;
         boolean pago, clienteExiste, produtoExiste;
 
+        var readerStringDate = new Scanner(System.in);
         var readerString = new Scanner(System.in);
         var readerInt = new Scanner(System.in);
         var readerDouble = new Scanner(System.in);
@@ -225,7 +229,7 @@ public class Main {
         identificador = readerInt.nextInt();
 
         System.out.println("Qual a data deste pedido? (dd-MM-yyyy)");
-        data = new SimpleDateFormat("dd-MM-yyyy").parse(readerString.next());
+        data = new SimpleDateFormat("dd-MM-yyyy").parse(readerStringDate.next());
 
         do {
             System.out.println("Qual o CNPJ ou CPF do cliente?");
@@ -240,7 +244,7 @@ public class Main {
         } while (!clienteExiste);
 
         System.out.println("Este pedido ja foi pago?");
-        if (readerString.nextLine().contains("S"))
+        if (readerString.nextLine().toUpperCase().contains("S"))
             pago = true;
 
         else
@@ -265,10 +269,10 @@ public class Main {
                 }
             }
 
-            System.out.println("\nDeseja adicionar outro produto?\n[1]SIM\n[2]NÃO\n");
+            System.out.println("\nDeseja adicionar outro produto no pedido?\n[1]SIM\n[2]NÃO\n");
             resposta = readerInt.nextInt();
 
-        } while (resposta != 0);
+        } while (resposta != 2);
 
         for (var produto : produtoEscolhido) {
             valorTotalPedido += produto.get_valorTotal();
