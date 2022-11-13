@@ -421,7 +421,7 @@ public class Main {
         nome = reader.nextLine();        
      
         for (int i = 0; i < produto.size(); i++) {
-            if (produto.get(i).equals(nome)) {
+            if (produto.get(i).get_nomeProduto().equals(nome)) {
                 produto.get(i).Print();
             }
         }
