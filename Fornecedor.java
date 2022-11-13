@@ -1,14 +1,12 @@
 public class Fornecedor {
     private String _nome;
-    private String _email;
     private String _cnpjFornecedor;
     private boolean _pj;
    
     
 
-    public Fornecedor(String nome, String email, String cnpjFornecedor, boolean pj) {
+    public Fornecedor(String nome, String cnpjFornecedor, boolean pj) {
         _nome = nome;
-        _email = email;
         _cnpjFornecedor = cnpjFornecedor;
         _pj = pj;
     }
@@ -19,14 +17,6 @@ public class Fornecedor {
 
     public void set_nome(String _nome) {
         this._nome = _nome;
-    }
-
-    public String get_email() {
-        return _email;
-    }
-
-    public void set_email(String _email) {
-        this._email = _email;
     }
 
     public String get_cnpjFornecedor() {
@@ -47,7 +37,6 @@ public class Fornecedor {
 
     public void Print() {
         System.out.println("-- " + get_nome() + " --");
-        System.out.println("Email: " + get_email());
         System.out.println("CNPJ: " + get_cnpjFornecedor());
     }
 

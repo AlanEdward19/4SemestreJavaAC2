@@ -197,13 +197,10 @@ public class Main {
         System.out.println("Qual o nome do fornecedor?");
         nome = reader.nextLine();
 
-        System.out.println("Qual o email do fornecedor?");
-        email = reader.nextLine();
-
         System.out.println("Qual o CNPJ do fornecedor?");
         cnpj = reader.nextLine();
 
-        fornecedor = new Fornecedor(nome, email, cnpj, pj);
+        fornecedor = new Fornecedor(nome, cnpj, pj);
 
         return fornecedor;
     }

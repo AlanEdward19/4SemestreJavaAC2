@@ -1,7 +1,5 @@
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
 public class Pedido {
     private List<ItemPedido> _itemPedido;
     private int _idetificador;
