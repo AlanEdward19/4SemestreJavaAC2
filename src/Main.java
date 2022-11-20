@@ -290,8 +290,8 @@ public class Main {
 
                 var dataItem = ((Pedido) item).get_data();
 
-                if ((dataInicial.equals(dataItem) || dataInicial.after(dataItem)) 
-                    && (dataFinal.before(dataItem) || dataFinal.equals(dataItem))) {
+                if ((dataInicial.equals(dataItem) || dataInicial.before(dataItem)) 
+                    && (dataFinal.after(dataItem) || dataFinal.equals(dataItem))) {
                     
                     ((Pedido) item).Print();
                 }
@@ -334,13 +334,6 @@ public class Main {
 
         } while (!clienteExiste);
 
-        /*System.out.println("Este pedido ja foi pago?");
-        if (readerString.nextLine().toUpperCase().contains("S"))
-            pago = true;
-
-        else
-            pago = false;
-        */
         do {
             do {
                 System.out.println("Qual produto está neste pedido?");
